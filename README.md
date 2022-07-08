@@ -4,6 +4,7 @@ This project is intended to be used as a sample for
 deployment of kubernetes applications. 
 
 Basically this expose 3 apis:
+- /hangar
 - /ping
 - /current-date
 - /fibo/:n
