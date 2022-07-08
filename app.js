@@ -12,6 +12,10 @@ app.get('/', function (req, res) {
   res.send(obj);
 });
 
+app.get('/', function (req, res) {
+  res.send("Hello World");
+});
+
 app.get('/ping', function (req, res) {
   res.send("pong");
 });
