@@ -1,6 +1,6 @@
 {
-  "name": "gdgwpgk8s-hello",
-  "version": "0.0.0",
+  "name": "k8s-hello-node",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app.js"
