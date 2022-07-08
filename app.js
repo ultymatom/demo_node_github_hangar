@@ -4,6 +4,7 @@ let app = express();
 app.get('/', function (req, res) {
   let obj = {
     endpoints: [
+      "/hangar",
       "/ping",
       "/current-date",
       "/fibo/:n",
@@ -12,7 +13,7 @@ app.get('/', function (req, res) {
   res.send(obj);
 });
 
-app.get('/', function (req, res) {
+app.get('/hangar', function (req, res) {
   res.send("Hello World");
 });
 
