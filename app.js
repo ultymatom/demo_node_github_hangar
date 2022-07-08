@@ -39,13 +39,19 @@ app.get('/fibo/:n', function (req, res) {
 });
 
 
-app.listen(3000, function () {
+let server = app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
 
 
 function fibo(n) { // 1
-  if (n < 2)
+  if (n < 1)
+    return 0;
+  else if (n < 2)
     return 1;
-  else   return fibo(n - 3) + fibo(n - 1);
+  else
+    return fibo(n - 2) + fibo(n - 1);
 }
+
+module.exports.server = server
+module.exports.fibo = fibo
