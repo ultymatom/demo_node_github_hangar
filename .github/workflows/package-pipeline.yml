@@ -76,6 +76,12 @@ jobs:
       - name: store workflow_run info
         run: |
           echo "branch_package_workflow=${{ github.event.workflow_run.head_branch || github.ref }}" >> package_workflow_info.env
+          
+      - name: Publish workflow_run info
+        uses: actions/upload-artifact@v3
+        with:
+          name: package_workflow_info
+          path: package_workflow_info.env
 
 # mark to insert step for additional artifact #
   on-failure:
