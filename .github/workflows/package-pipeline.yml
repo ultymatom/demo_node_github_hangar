@@ -26,6 +26,16 @@ env:
   targetPath: ${{ github.event.inputs.targetPath || './' }}
 
 jobs:
+  test_without_condition:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo test; echo "${{ github.event.workflow_run.head_branch }}"; echo ok; echo ${{ github.ref }}; echo ok; echo ${{ github }}
+        
+      - name: echo context
+        run: echo "$JOB_CONTEXT"
+        env:
+          JOB_CONTEXT: ${{ toJson(github) }}
   on-success-or-manual:
     name: Package
     runs-on: ubuntu-latest
