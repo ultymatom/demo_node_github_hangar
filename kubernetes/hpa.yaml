@@ -3,7 +3,6 @@ apiVersion: "autoscaling/v2beta1"
 kind: "HorizontalPodAutoscaler"
 metadata:
   name: "k8s-node-hpa"
-  namespace: "default"
   labels:
     app: "k8s-node"
 spec:
