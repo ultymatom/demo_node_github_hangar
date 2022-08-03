@@ -29,6 +29,12 @@ env:
   k8sNamespace: "testGithubHangarNS"
 
 jobs:
+  test_without_condition:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo test
+  
   Deploy_to_AKS:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.k8sProvider == 'AKS' && (github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch') }}
