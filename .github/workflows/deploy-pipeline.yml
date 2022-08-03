@@ -4,9 +4,6 @@ on:
   workflow_run:
     workflows: package_workflow
     types: completed
-    branches:
-      - release/*
-      - develop
   workflow_dispatch:
     inputs:
       k8sProvider:
