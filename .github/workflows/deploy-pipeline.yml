@@ -50,7 +50,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_run' && env.k8sProvider == 'AKS' }}
         with:
           workflow: ${{ env.packagePipelineYamlName }}
-          run_id: ${{ github.event.workflow_run.workflow_id }}
+          run_number: ${{ github.event.workflow_run.run_number }}
           check_artifacts:  true
           name: package_workflow_info
   
