@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: echo test
+        run: echo test; echo "${{ github.event.workflow_run.head_branch }}"; echo ok; echo ${{ github.ref }}; echo ok; echo ${{ github }}
   
   Deploy_to_AKS:
     runs-on: ubuntu-latest
