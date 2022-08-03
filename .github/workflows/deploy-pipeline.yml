@@ -24,7 +24,7 @@ env:
   provisionPipeline: "aks-provisioning.yml"
   packagePipelineName: "package_workflow.yml"
   packageTagScript: ".github/workflows/scripts/package-extra.sh"
-  k8sNamespace: "testGithubHangarNS"
+  k8sNamespace: "testgithubhangarns"
   packagePipelineYamlName: "package-pipeline.yml"
 
 jobs:
