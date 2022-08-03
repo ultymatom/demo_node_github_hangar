@@ -6,7 +6,7 @@ on:
     inputs:
       sonarUrl:
         required: false
-        default: http://54.228.243.213:9000/
+        default: http://54.220.247.102:9000/
       sonarToken:
         required: false
         default:
@@ -17,7 +17,7 @@ on:
 env:
   buildPipelineYamlName: 'build-pipeline.yml'
   ciPipelineYamlName: 'ci-pipeline.yml'
-  sonarUrl: ${{ github.event.inputs.sonarUrl || 'http://54.228.243.213:9000/' }}
+  sonarUrl: ${{ github.event.inputs.sonarUrl || 'http://54.220.247.102:9000/' }}
   sonarToken: ${{ github.event.inputs.sonarToken || secrets.SONARQUBE_TOKEN }}
   targetPath: ${{ github.event.inputs.targetPath || './' }}
 
