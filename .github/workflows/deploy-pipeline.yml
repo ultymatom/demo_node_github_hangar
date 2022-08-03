@@ -17,6 +17,7 @@ on:
         default: ''
 
 env:
+  k8sProvider: ${{ github.event.inputs.k8sProvider || 'AKS' }}
   deploymentYamlPath: "${{ github.workspace }}/kubernetes/application-deployment.yaml" 
   ingressYamlPath: "${{ github.workspace }}/kubernetes/ingress.yaml"  
   deployFilesPath: "${{ github.workspace }}/kubernetes"
@@ -40,7 +41,7 @@ jobs:
   
   Deploy_to_AKS:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.k8sProvider == 'AKS' && (github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch') }}
+    if: ${{ github.env.k8sProvider == 'AKS' && (github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch') }}
     steps:
     
       - name: get info from package
