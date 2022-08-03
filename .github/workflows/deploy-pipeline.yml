@@ -21,7 +21,7 @@ env:
   deploymentYamlPath: "${{ github.workspace }}/kubernetes/application-deployment.yaml" 
   ingressYamlPath: "${{ github.workspace }}/kubernetes/ingress.yaml"  
   deployFilesPath: "${{ github.workspace }}/kubernetes"
-  provisionPipeline: "aks_provisioning.yml"
+  provisionPipeline: "aks-provisioning.yml"
   packagePipelineName: "package_workflow.yml"
   packageTagScript: ".github/workflows/scripts/package-extra.sh"
   k8sNamespace: "testGithubHangarNS"
