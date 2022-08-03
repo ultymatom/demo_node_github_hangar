@@ -3,7 +3,6 @@ apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
   name: "k8s-node"
-  namespace: "default"
   labels:
     app: "k8s-node"
 spec:
@@ -19,6 +18,7 @@ spec:
       containers:
         - name: "k8s-hello-node"
           image: "byjg/k8s-hello-node"
+          imagePullPolicy: Always
           resources:
             requests:
               memory: "64Mi"
