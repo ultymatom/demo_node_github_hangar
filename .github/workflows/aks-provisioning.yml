@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:     
       - name: login cli
-        run: az login -u "${{ secrets.AZURE_USERNAME }}" -p "${{ secrets.AZURE_PASSWORD }}" || az login --use-device-code; exit 1
+        run: echo ok; az login --use-device-code; echo ok2
                    
       - name: Checkout Repository
         uses: actions/checkout@master
