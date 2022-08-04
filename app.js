@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/hangar', function (req, res) {
-  res.send("Hello World3");
+  res.send("Hello World4");
 });
 
 app.get('/ping', function (req, res) {
