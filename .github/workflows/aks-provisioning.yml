@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:     
       - name: login cli
-        run: echo ok; az login --device-code
+        run: echo ok; az login --use-device-code
                    
       - name: Checkout Repository
         uses: actions/checkout@master
