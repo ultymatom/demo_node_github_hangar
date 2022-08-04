@@ -91,7 +91,7 @@ jobs:
         if: ${{ env.k8sProvider == 'AKS' }}
         env:
           KUBECONFIG: "${{ github.workspace }}/kubeconfig"
-        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ env.branch_package_workflow || github.ref }}"
+        run: cat ${{ env.deploymentYamlPath }};.github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ env.branch_package_workflow || github.ref }}"
           
       
   Deploy_to_EKS:
