@@ -96,7 +96,7 @@ jobs:
       id: obtaindns
       run: |
        aws eks update-kubeconfig --name ${{ github.event.inputs.cluster_name }} --region ${{ github.event.inputs.aws_region }}
-       dnsname=$(./scripts/obtain-dns.sh)
+       dnsname=$(.github/workflows/scripts/obtain-dns.sh)
        echo "::set-output name=dnsname::$dnsname"
 
     - name: Publish Ingress Controller domain name
@@ -104,7 +104,7 @@ jobs:
       id: publishdns
       run: |
         cd .github
-        mkdir vars
+        mkdir -p vars
         cd vars
         touch "eks_variables.env"
         echo "cluster_name=${{ github.event.inputs.cluster_name }}" >> eks_variables.env
@@ -121,5 +121,5 @@ jobs:
       id: installrancher
       if: ${{ github.event.inputs.install_rancher == 'true' && github.event.inputs.cluster_operation == 'create'}}
       run: |
-        ./scripts/install-rancher.sh ${{ steps.obtaindns.outputs.dnsname }}
+        .github/workflows/scripts/install-rancher.sh ${{ steps.obtaindns.outputs.dnsname }}
 
