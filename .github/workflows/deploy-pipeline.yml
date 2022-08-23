@@ -10,14 +10,14 @@ on:
         description: 'Deploy Cluster Name.'
         required: true
         type: string  
-        default: 'AKS'
+        default: 'nothing'
       secretsName:
         description: 'ImagePullSecret Name.'
         type: string
         default: ''
 
 env:
-  k8sProvider: ${{ github.event.inputs.k8sProvider || 'AKS' }}
+  k8sProvider: ${{ github.event.inputs.k8sProvider || 'nothing' }}
   deploymentYamlPath: "${{ github.workspace }}/kubernetes/application-deployment.yaml" 
   ingressYamlPath: "${{ github.workspace }}/kubernetes/ingress.yaml"  
   deployFilesPath: "${{ github.workspace }}/kubernetes"
@@ -28,8 +28,9 @@ env:
   packagePipelineYamlName: "package-pipeline.yml"
 
 jobs:
-  test_without_condition:
+  test_secret_condition:
     runs-on: ubuntu-latest
+    if: ${{ secrets.test_condition == "oui" }}
     steps:
       - name: test
         run: echo test; echo "${{ github.event.workflow_run.head_branch }}"; echo ok; echo ${{ github.ref }}; echo ok; echo ${{ github }}
