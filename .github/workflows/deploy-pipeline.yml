@@ -17,7 +17,7 @@ on:
         default: ''
 
 env:
-  k8sProvider: ${{ github.event.inputs.k8sProvider || EKS }}
+  k8sProvider: ${{ github.event.inputs.k8sProvider || 'EKS' }}
   deploymentYamlPath: "${{ github.workspace }}/kubernetes/application-deployment.yaml"
   ingressYamlPath: "${{ github.workspace }}/kubernetes/ingress.yaml"
   deployFilesPath: "${{ github.workspace }}/kubernetes"
