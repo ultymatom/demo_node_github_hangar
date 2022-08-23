@@ -55,6 +55,12 @@ jobs:
         uses: actions/checkout@master
         with:
           ref: ${{ env.commit_package_workflow || github.sha }}
+          
+
+      - name: Set additional Environment Variables
+        uses: tw3lveparsecs/github-actions-setvars@v0.1
+        with:
+          envFilePath: ".github/vars/*"
 
       - name: Download artifact from AKS provision pipeline workflow
         if: ${{ env.k8sProvider == 'AKS' }}
@@ -72,10 +78,6 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws eks update-kubeconfig --name ${{ env.cluster_name }} --region ${{ secrets.AWS_REGION }}
 
-      - name: Set additional Environment Variables
-        uses: tw3lveparsecs/github-actions-setvars@v0.1
-        with:
-          envFilePath: ".github/vars/*"
 
       - name: Create secrets for AKS
         if: ${{ env.k8sProvider == 'AKS' && github.event.inputs.secretsName != '' }}
