@@ -104,7 +104,7 @@ jobs:
           envFilePath: package_workflow_info.env
 
       - name: Cancel Workflow
-        if: {{ github.event.workflow_run.conclusion == 'success' && (env.branch_package_workflow != "develop" || env.branch_package_workflow != "release/*" }}
+        if: ${{ github.event.workflow_run.conclusion == 'success' && (env.branch_package_workflow != "develop" || env.branch_package_workflow != "release/*") }}
         uses: andymckay/cancel-action@0.2
 
       - name: Checkout the repository
