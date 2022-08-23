@@ -4,9 +4,6 @@ on:
   workflow_run:
     workflows: package_workflow
     types: completed
-    branches:
-      - release/*
-      - develop
   workflow_dispatch:
     inputs:
       k8sProvider:
@@ -32,7 +29,7 @@ env:
 jobs:
   Deploy_to_AKS:
     runs-on: ubuntu-latest
-    if: ${{ env.k8sProvider == 'AKS' || github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
 
       - name: get info from package
@@ -88,7 +85,7 @@ jobs:
 
   Deploy_to_EKS:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.k8sProvider == 'EKS' || github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: get info from package
         uses: dawidd6/action-download-artifact@v2
@@ -105,6 +102,10 @@ jobs:
         if: ${{ github.event_name == 'workflow_run' && env.k8sProvider == 'AKS' }}
         with:
           envFilePath: package_workflow_info.env
+
+      - name: Cancel Workflow
+        if: {{ github.event.workflow_run.conclusion == 'success' && (env.branch_package_workflow != "develop" || env.branch_package_workflow != "release/*"
+        uses: andymckay/cancel-action@0.2
 
       - name: Checkout the repository
         uses: actions/checkout@master
