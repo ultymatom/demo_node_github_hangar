@@ -30,7 +30,6 @@ env:
 jobs:
   test_secret_condition:
     runs-on: ubuntu-latest
-    if: ${{ secrets.test_condition == "oui" }}
     steps:
       - name: test
         run: echo test; echo "${{ github.event.workflow_run.head_branch }}"; echo ok; echo ${{ github.ref }}; echo ok; echo ${{ github }}
