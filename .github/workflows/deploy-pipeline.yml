@@ -22,7 +22,7 @@ env:
   ingressYamlPath: "${{ github.workspace }}/kubernetes/ingress.yaml"
   deployFilesPath: "${{ github.workspace }}/kubernetes"
   aksProvisionPipeline: 'aks-provisioning.yml'
-  packagePipelineName: "package-pipeline.yml"
+  packagePipelineYamlName: "package-pipeline.yml"
   packageTagScript: ".github/workflows/scripts/package-extra.sh"
   k8sNamespace: "hangar"
 
