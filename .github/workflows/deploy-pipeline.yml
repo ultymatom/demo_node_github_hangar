@@ -76,7 +76,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws eks update-kubeconfig --name ${{ env.cluster_name }} --region ${{ secrets.AWS_REGION }}
+          aws eks update-kubeconfig --name ${{ env.eks_cluster_name }} --region ${{ secrets.AWS_REGION }}
 
 
       - name: Create secrets for AKS
@@ -93,7 +93,7 @@ jobs:
 
       - name: Deploy app to EKS
         if: ${{ env.k8sProvider == 'EKS' }}
-        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ github.event.workflow_run.head_branch || github.ref }}"
+        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.eks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ github.event.workflow_run.head_branch || github.ref }}"
 
   # mark to insert step for additional artifact #
   on-failure:
