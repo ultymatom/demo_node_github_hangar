@@ -90,7 +90,7 @@ jobs:
       - name: Deploy app
         env:
           KUBECONFIG: /home/runner/.kube/config
-        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aeks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ github.event.workflow_run.head_branch || github.ref }}"
+        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aeks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ env.branch_package_workflow || github.ref }}"
 
   # mark to insert step for additional artifact #
   on-failure:
