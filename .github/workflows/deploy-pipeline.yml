@@ -25,7 +25,7 @@ env:
   packagePipelineYamlName: "package-pipeline.yml"
   packageTagScript: ".github/workflows/scripts/package-extra.sh"
   k8sNamespace: "hangar"
-  kubeConfigPath: "~/.kube/config"
+  kubeConfigPath: "/home/runner/.kube/config"
 
 jobs:
   Deploy:
@@ -73,6 +73,7 @@ jobs:
           check_artifacts:  true
           search_artifacts: true
           name: kubeconfig
+          path: ${{ env.kubeConfigPath }}
 
       - name: Download artifact from EKS provision pipeline workflow
         if: ${{ env.k8sProvider == 'EKS' }}
@@ -89,7 +90,7 @@ jobs:
 
       - name: Deploy app
         env:
-          KUBECONFIG: /home/runner/.kube/config
+          KUBECONFIG: ${{ env.kubeConfigPath }}
         run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aeks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ env.branch_package_workflow || github.ref }}"
 
   # mark to insert step for additional artifact #
