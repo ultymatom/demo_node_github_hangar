@@ -32,6 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
+      - name: debug
+        run: echo ${{ env.kubeConfigPath }}
+        
       - name: get info from package
         uses: dawidd6/action-download-artifact@v2
         id: downloadFromBuild
@@ -86,7 +89,7 @@ jobs:
 
       - name: Deploy app
         env:
-          KUBECONFIG: ${{ env.kubeConfigPath }}
+          KUBECONFIG: /home/runner/.kube/config
         run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aeks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ github.event.workflow_run.head_branch || github.ref }}"
 
   # mark to insert step for additional artifact #
