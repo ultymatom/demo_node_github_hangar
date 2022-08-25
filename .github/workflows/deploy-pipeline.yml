@@ -89,11 +89,11 @@ jobs:
 
       - name: Deploy app to AKS
         if: ${{ env.k8sProvider == 'AKS' }}
-        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ github.event.workflow_run.head_branch || github.ref }}"
+        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ env.branch_package_workflow || github.ref }}"
 
       - name: Deploy app to EKS
         if: ${{ env.k8sProvider == 'EKS' }}
-        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.eks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ github.event.workflow_run.head_branch || github.ref }}"
+        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.eks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ env.branch_package_workflow || github.ref }}"
 
   # mark to insert step for additional artifact #
   on-failure:
