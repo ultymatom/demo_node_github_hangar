@@ -10,7 +10,7 @@ on:
         description: 'Deploy Cluster Name.'
         required: true
         type: string
-        default: 'EKS'
+        default: 'AKS'
       secretsName:
         description: 'ImagePullSecret Name.'
         type: string
