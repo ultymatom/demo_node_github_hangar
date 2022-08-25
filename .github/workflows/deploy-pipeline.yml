@@ -25,6 +25,7 @@ env:
   packagePipelineYamlName: "package-pipeline.yml"
   packageTagScript: ".github/workflows/scripts/package-extra.sh"
   k8sNamespace: "hangar"
+  kubeConfigPath: "~/.kube/config"
 
 jobs:
   Deploy:
@@ -55,7 +56,6 @@ jobs:
         uses: actions/checkout@master
         with:
           ref: ${{ env.commit_package_workflow || github.sha }}
-          
 
       - name: Set additional Environment Variables
         uses: tw3lveparsecs/github-actions-setvars@v0.1
@@ -76,24 +76,18 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws eks update-kubeconfig --name ${{ env.eks_cluster_name }} --region ${{ secrets.AWS_REGION }}
+          aws eks update-kubeconfig --name ${{ env.cluster_name }} --region ${{ secrets.AWS_REGION }}
 
-
-      - name: Create secrets for AKS
-        if: ${{ env.k8sProvider == 'AKS' && github.event.inputs.secretsName != '' }}
+      - name: Create secrets
+        if: ${{ github.event.inputs.secretsName != '' }}
+        env:
+          KUBECONFIG: ${{ env.kubeConfigPath }}
         run: .github/workflows/scripts/secrets.sh "${{ env.k8sNamespace }}" "${{ github.event.inputs.secretsName }}" "${{ secrets.DOCKER_USER }}" "${{ secrets.DOCKER_PASSWORD }}" "${{ env.registry }}" "${{ env.deploymentYamlPath }}"
 
-      - name: Create secrets for EKS
-        if: ${{ env.k8sProvider == 'EKS' && github.event.inputs.secretsName != '' }}
-        run: .github/workflows/scripts/secrets.sh "${{ env.k8sNamespace }}" "${{ github.event.inputs.secretsName }}" "${{ secrets.DOCKER_USER }}" "${{ secrets.DOCKER_PASSWORD }}" "${{ env.registry }}" "${{ env.deploymentYamlPath }}"
-
-      - name: Deploy app to AKS
-        if: ${{ env.k8sProvider == 'AKS' }}
-        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ env.branch_package_workflow || github.ref }}"
-
-      - name: Deploy app to EKS
-        if: ${{ env.k8sProvider == 'EKS' }}
-        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.eks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ env.branch_package_workflow || github.ref }}"
+      - name: Deploy app
+        env:
+          KUBECONFIG: ${{ env.kubeConfigPath }}
+        run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aeks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ github.event.workflow_run.head_branch || github.ref }}"
 
   # mark to insert step for additional artifact #
   on-failure:
