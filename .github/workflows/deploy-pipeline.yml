@@ -17,7 +17,7 @@ on:
         default: ''
 
 env:
-  k8sProvider: ${{ github.event.inputs.k8sProvider || 'EKS' }}
+  k8sProvider: ${{ github.event.inputs.k8sProvider || 'AKS' }}
   deploymentYamlPath: "${{ github.workspace }}/kubernetes/application-deployment.yaml"
   ingressYamlPath: "${{ github.workspace }}/kubernetes/ingress.yaml"
   deployFilesPath: "${{ github.workspace }}/kubernetes"
@@ -26,6 +26,7 @@ env:
   packageTagScript: ".github/workflows/scripts/package-extra.sh"
   k8sNamespace: "hangar"
   kubeConfigPath: "/home/runner/.kube/config"
+  kubeConfigFolder: "/home/runner/.kube"
 
 jobs:
   Deploy:
@@ -73,8 +74,11 @@ jobs:
           check_artifacts:  true
           search_artifacts: true
           name: kubeconfig
-          path: ${{ env.kubeConfigPath }}
 
+      - name: MV kubeconfig AKS
+        if: ${{ env.k8sProvider == 'AKS' }}
+        run: mkdir -p ${{ kubeConfigFolder }}; mv ${{ github.workspace }}/kubeconfig ${{ kubeConfigPath }}
+        
       - name: Download artifact from EKS provision pipeline workflow
         if: ${{ env.k8sProvider == 'EKS' }}
         run: |
