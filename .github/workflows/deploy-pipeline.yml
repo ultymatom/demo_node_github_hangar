@@ -77,7 +77,7 @@ jobs:
 
       - name: MV kubeconfig AKS
         if: ${{ env.k8sProvider == 'AKS' }}
-        run: mkdir -p ${{ env.kubeConfigFolder }}; mv ${{ github.workspace }}/kubeconfig ${{ kubeConfigPath }}
+        run: mkdir -p ${{ env.kubeConfigFolder }}; mv ${{ github.workspace }}/kubeconfig ${{ env.kubeConfigPath }}
         
       - name: Download artifact from EKS provision pipeline workflow
         if: ${{ env.k8sProvider == 'EKS' }}
