@@ -18,7 +18,7 @@ on:
 
 permissions:
   actions: write
-  contents: read
+
 env:
   buildPipelineYamlName: 'build-pipeline.yml'
   ciPipelineYamlName: 'ci-pipeline.yml'
@@ -63,7 +63,7 @@ jobs:
           path: ${{ env.targetPath }}
 
       - name: Extracting archive
-        run: tar -C ${{ env.targetPath }} -xf ${{ env.targetPath }}/BuildOutput.tar
+        run: tar -C ${{ env.targetPath }} -xf ./BuildOutput.tar
 
       - name: Build and push image to registry
         run: .github/workflows/scripts/package.sh -f "$GITHUB_WORKSPACE/${{ env.relativeDockerfilePath }}" -c "$GITHUB_WORKSPACE" -u "${{ secrets.DOCKER_USER }}" -p "${{ secrets.DOCKER_PASSWORD }}"  -r "${{ env.registry }}" -i "${{ env.imageName }}" -b "${{ github.event.workflow_run.head_branch || github.ref }}"
@@ -72,23 +72,17 @@ jobs:
       - name: Build and push image to registry (AWS)
         run: .github/workflows/scripts/package.sh -f "$GITHUB_WORKSPACE/${{ env.relativeDockerfilePath }}" -c "$GITHUB_WORKSPACE" -a "${{ secrets.AWS_ACCESS_KEY }}" -s "${{ secrets.AWS_SECRET_ACCESS_KEY }}" -l "${{ env.region }}" -r "${{ env.registry }}" -i "${{ env.imageName }}" -b "${{ github.event.workflow_run.head_branch || github.ref }}"
         if: ${{ env.isECR == 'true' }}
-        
+
       - name: store workflow_run info
         run: |
           echo "branch_package_workflow=${{ github.event.workflow_run.head_branch || github.ref }}" >> package_workflow_info.env
           echo "commit_package_workflow=${{ github.event.workflow_run.head_commit.id || github.sha }}" >> package_workflow_info.env
-          
+
       - name: Publish workflow_run info
         uses: actions/upload-artifact@v3
         with:
           name: package_workflow_info
           path: package_workflow_info.env
-          
-      - name: setting output var
-        run: |
-          echo "::set-output name=branch_package_workflow::${{ github.event.workflow_run.head_branch || github.ref }}"
-          echo "::set-output name=commit_package_workflow::${{ github.event.workflow_run.head_commit.id || github.sha }}"
-          
 
 # mark to insert step for additional artifact #
   on-failure:
