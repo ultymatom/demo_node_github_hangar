@@ -10,21 +10,21 @@ on:
         description: 'Deploy Cluster Name.'
         required: true
         type: string
-        default: 'EKS'
+        default: 'AKS'
       secretsName:
         description: 'ImagePullSecret Name.'
         type: string
-        default: ''
+        default: 'dockerhub'
 
 env:
-  k8sProvider: ${{ github.event.inputs.k8sProvider || 'EKS' }}
+  k8sProvider: ${{ github.event.inputs.k8sProvider || 'AKS' }}
   deploymentYamlPath: "${{ github.workspace }}/kubernetes/application-deployment.yaml"
   ingressYamlPath: "${{ github.workspace }}/kubernetes/ingress.yaml"
   deployFilesPath: "${{ github.workspace }}/kubernetes"
   aksProvisionPipeline: 'aks-provisioning.yml'
   packagePipelineYamlName: "package-pipeline.yml"
   packageTagScript: ".github/workflows/scripts/package-extra.sh"
-  k8sNamespace: "hangar"
+  k8sNamespace: "githubhangar"
   kubeConfigPath: "/home/runner/.kube/config"
   kubeConfigFolder: "/home/runner/.kube"
 
@@ -71,7 +71,7 @@ jobs:
           check_artifacts:  true
           search_artifacts: true
           name: kubeconfig
-          
+
       - name: MV kubeconfig AKS
         if: ${{ env.k8sProvider == 'AKS' }}
         run: mkdir -p ${{ env.kubeConfigFolder }}; mv ${{ github.workspace }}/kubeconfig ${{ env.kubeConfigPath }}
@@ -89,13 +89,13 @@ jobs:
           KUBECONFIG: ${{ env.kubeConfigPath }}
         run: .github/workflows/scripts/secrets.sh "${{ env.k8sNamespace }}" "${{ github.event.inputs.secretsName }}" "${{ secrets.DOCKER_USER }}" "${{ secrets.DOCKER_PASSWORD }}" "${{ env.registry }}" "${{ env.deploymentYamlPath }}"
 
-      - name: Deploy app
+      - name: Deploy app AKS
         if: ${{ env.k8sProvider == 'AKS' }}
         env:
           KUBECONFIG: ${{ env.kubeConfigPath }}
         run: .github/workflows/scripts/deploy.sh "${{ env.k8sNamespace }}" "${{ env.imageName }}" "${{ env.aks_dns_name }}" "${{ env.deploymentYamlPath }}" "${{ env.ingressYamlPath }}" "${{ env.deployFilesPath }}" "${{ env.packageTagScript }}" "${{ env.branch_package_workflow || github.ref }}"
 
-      - name: Deploy app
+      - name: Deploy app EKS
         if: ${{ env.k8sProvider == 'EKS' }}
         env:
           KUBECONFIG: ${{ env.kubeConfigPath }}
