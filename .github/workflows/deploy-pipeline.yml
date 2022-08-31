@@ -81,7 +81,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws eks update-kubeconfig --name ${{ env.cluster_name }} --region ${{ secrets.AWS_REGION }}
+          aws eks update-kubeconfig --name ${{ env.eks_cluster_name }} --region ${{ secrets.AWS_REGION }}
 
       - name: Create secrets
         if: ${{ github.event.inputs.secretsName != '' }}
